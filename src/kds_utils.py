@@ -1,6 +1,4 @@
 import serial
-import time
-import os
 from typing import Optional
 
 class KdsUtil:
