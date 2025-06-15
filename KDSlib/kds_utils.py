@@ -13,7 +13,6 @@ class KdsUtil:
         }
 
     def connect(self) -> bool:
-        """Open serial connection."""
         try:
             self.ser = serial.Serial(**self.config)
             return True
@@ -22,48 +21,26 @@ class KdsUtil:
             return False
 
     def disconnect(self) -> None:
-        """Close serial connection."""
         if self.ser and self.ser.is_open:
             self.ser.close()
 
-    def send_line(self, command: str, read: bool = False) -> Optional[str]:
-        """
-        Send command and optionally read response.
-        
-        Args:
-            command (str): Command to send
-            read (bool): Whether to read response
-            
-        Returns:
-            Optional[str]: Response if read=True, None otherwise
-        """
+    def send_line(self, command: str) -> Optional[str]:
         if not self.ser or not self.ser.is_open:
             return None
-            
         try:
             # Send command
             self.ser.write(f"{command}\r\n".encode(self.config['encoding']))
-            
-            # Return response if requested
-            if read:
-                return self.ser.readline().decode(self.config['encoding']).strip()
-            return None
-            
+            return self.ser.readline().decode(self.config['encoding']).strip()
+
         except (serial.SerialException, UnicodeError) as e:
             print(f"Communication error: {e}")
             return None
 
     def __enter__(self):
-        """Context manager entry."""
         self.connect()
         return self
-
-    def __exit__(self, exc_type, exc_val, exc_tb):
-        """Context manager exit."""
-        self.disconnect()
-
+    
     def __del__(self):
-        """Cleanup on deletion."""
         self.disconnect()
 
 def testing():
