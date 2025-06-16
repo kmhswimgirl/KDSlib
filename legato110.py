@@ -6,13 +6,15 @@ class Legato110:
     def __init__(self):
         self.kds = KdsUtil()
     
+    # utilities
+
     def address(self, address_num:int):
         pass
 
     def load(self, qs: bool, method:str):
         if not qs and method != None:
             self.kds.send_line(f"load {method}")
-        if not qs and method is None:
+        if not qs and method == None:
             self.kds.send_line("load")
         if qs:
             self.kds.send_line(f"load qs")
@@ -21,8 +23,10 @@ class Legato110:
         self.kds.send_line("stp")
     
     def run(self):
-        """Start the pump running."""
+        """Start the set mothod."""
         self.kds.send_line("run") 
+
+    # set parameters
 
     def set_syringe_size(self, diameter: float, volume: float, units: str):
         dia = str(diameter)
@@ -35,30 +39,37 @@ class Legato110:
     def set_target_volume(self, mode: str):
         pass
 
+    def set_target_time(self, time:int):
+        sec = str(time)
+        self.kds.send_line(f"ttime {sec}")
+
     def reverse_direction(self):
         self.kds.send_line("rrun")
 
-    def time(self, clear:bool, mode: str, seconds:int):
-        pass
+    # clear values 
 
     def clear_volume(self, parameter:str):
-        if parameter is "iVol" or "iv" or "infused volume":
+        if parameter == "infused":
             self.kds.send_line("civolume")
-        elif parameter is "target volume":
+        elif parameter == "target":
             self.kds.send_line("civol")
-        elif parameter is "":
+        elif parameter == "":
             self.kds.send_line("civolume")
-        pass
 
     def clear_time(self, type:str):
-        if type is "infuse":
+        if type == "infuse":
             self.kds.send_line("citime")
-        elif type is "target":
-            self.kds.send_line("citime")
-        elif type is "both":
+        elif type == "target":
+            self.kds.send_line("cttime")
+        elif type == "both":
             self.kds.send_line("ctime")
-        elif type is "withdraw":
+        elif type == "withdraw":
             self.kds.send_line("cwtime")
+        else:
+            print("command not recognized")
+
+    # display values
+
 
     def infuse(self, ):
         pass
