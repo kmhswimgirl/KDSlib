@@ -47,7 +47,7 @@ class Legato110:
         else:
             print("[RM]: Invalid input. Requires: [infuse | withdraw]")
 
-    # -----------------VOLUME COMMANDS--------------------
+    # -----------------VOLUME COMMANDS-----------------
     def set_target_volume(self, volume:int, units:str):
         self.kds.send_line(f"tvolume {volume} {units}")
 
@@ -104,18 +104,12 @@ class Legato110:
         else:
             print("[SWRate]: please check documentation. incorrect cmd format")
 
-    def set_infuse_ramp(self, time:int, start_rate:str, end_rate:str, units:str = "ml"):
+    def set_infuse_ramp(self, start_rate:str, end_rate:str, start_units:str, end_units:str, time:int):
         if start_rate == "max" or "min":
-            self.kds.send_line(f"iramp {start_rate} {end_rate} {units} {time}")
+            self.kds.send_line(f"iramp {start_rate} {end_rate} {end_units} {time}")
         elif end_rate == "max" or "min":
-            self.kds.send_line(f"iramp {start_rate} {units} {end_rate} {time}")
-        elif{
-            
-        }
-            
-        
-        self.kds.send_line(f"iramp {start_rate} {units} {end_rate} {units} {time}")
-        print("hello")
-      
-    def set_withdraw_ramp(self, start_rate:int, end_rate:int, units:str, time:int, start_rate_max:bool = False, end_rate_max:bool = False):
-        pass
+            self.kds.send_line(f"iramp {start_rate} {start_units} {end_rate} {time}")
+        elif end_rate == "max" or "min" and start_rate == "max" or "min":
+            self.kds.send_line(f"iramp {start_rate} {end_rate} {time}")
+        else:
+            self.kds.send_line(f"iramp {start_rate} {start_units} {end_rate} {end_units} {time}")
