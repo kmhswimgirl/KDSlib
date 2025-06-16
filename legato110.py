@@ -19,12 +19,6 @@ class Legato110:
         if qs:
             self.kds.send_line(f"load qs")
 
-    def stop(self):
-        self.kds.send_line("stp")
-    
-    def run(self):
-        """Start the set mothod."""
-        self.kds.send_line("run") 
 
     # set parameters
     def set_syringe_size(self, diameter: float, volume: float, units: str):
@@ -35,8 +29,23 @@ class Legato110:
         time.sleep(0.01)
         self.kds.send_line(f"svolume {vol} {units}")
 
+    # -----------------RUN COMMANDS--------------------
+    def run(self):
+        self.kds.send_line("run") 
+
     def reverse_direction(self):
-        self.kds.send_line("rrun")
+            self.kds.send_line("rrun")
+
+    def stop(self):
+        self.kds.send_line("stp")
+
+    def run_motors(self, direction:str):
+        if direction == "infuse":
+            self.kds.send_line("irun")
+        elif direction == "withdraw":
+            self.kds.send_line("wrun")
+        else:
+            print("Invalid input. Requires: [infuse | withdraw]")
 
     # -----------------VOLUME COMMANDS--------------------
     def set_target_volume(self, volume:int, units:str):
