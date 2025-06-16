@@ -37,19 +37,22 @@ class Legato110:
 
     def reverse_direction(self):
         self.kds.send_line("rrun")
-    # -----------------VOLUME COMMANDS--------------------
 
-    def set_target_volume(self, mode: str):
-        pass
+    # -----------------VOLUME COMMANDS--------------------
+    def set_target_volume(self, volume:int, units:str):
+        self.kds.send_line(f"tvolume {volume} {units}")
 
     def clear_volume(self, parameter:str):
-        if parameter == "infused":
+        if parameter == "infuse":
             self.kds.send_line("civolume")
         elif parameter == "target":
-            self.kds.send_line("civol")
-        elif parameter == "":
-            self.kds.send_line("civolume")
-
+            self.kds.send_line("ctvolume")
+        elif parameter == "bothDirs":
+            self.kds.send_line("cvolume")
+        elif parameter == "withdraw":
+            self.kds.send_line("cwvolume")
+        else:
+            print("command not recognized")
 
     # -----------------TIME COMMANDS--------------------
     def set_target_time(self, time:int):
