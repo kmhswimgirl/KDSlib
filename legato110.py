@@ -8,8 +8,7 @@ class Legato110:
     
     # utilities
 
-    def address(self, address_num:int):
-        pass
+   
 
     def load(self, qs: bool, method:str):
         if not qs and method != None:
@@ -28,6 +27,65 @@ class Legato110:
         self.kds.send_line(f"diameter {dia}")
         time.sleep(0.01)
         self.kds.send_line(f"svolume {vol} {units}")
+    # -----------------SYSTEM COMMANDS--------------------
+    def address(self, address_num:int):
+        pass
+
+    def ascale(self, scale_value:int):
+        pass
+
+    def set_baud(self, baudrate:int):
+        pass
+
+    def boot(self):
+        pass
+
+    def catalog(self):
+        pass
+
+    def command_set(self, set:str):
+        pass
+
+    def config(self):
+        pass
+
+    def delmethod(self, mathod_name:str):
+        pass
+
+    def dim_screen(self, value:int):
+        pass
+
+    def echo(self):
+        pass
+
+    def free(self):
+        pass
+
+    def force(self, force_percent:int):
+        pass
+
+    def ftswitch(self, value:int):
+        pass
+
+    def mode(self):
+        # displays mode, later issue
+        pass
+    
+    def poll(self, mode:str):
+        # potential vals are on, off, remote
+        pass
+
+    def remote(self, pump_addr:int):
+        pass
+
+    def calibrate_tilt(self):
+        pass
+
+    def set_time(self, time:int):
+        pass
+
+    def get_version(self, verbose:bool):
+        pass
 
     # -----------------RUN COMMANDS--------------------
     def run(self):
