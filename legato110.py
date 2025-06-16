@@ -29,7 +29,6 @@ class Legato110:
         time.sleep(0.01)
         self.kds.send_line(f"svolume {vol} {units}")
 
-
     # -----------------RUN COMMANDS--------------------
     def run(self):
         self.kds.send_line("run") 
@@ -46,7 +45,7 @@ class Legato110:
         elif direction == "withdraw":
             self.kds.send_line("wrun")
         else:
-            print("invalid command")
+            print("Invalid input. Requires: [infuse | withdraw]")
 
     # -----------------VOLUME COMMANDS--------------------
     def set_target_volume(self, volume:int, units:str):
