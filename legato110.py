@@ -2,10 +2,10 @@ from kds_utils import KdsUtil
  
 class Legato110:
 
-    def __init__(self):
-        self.kds = KdsUtil()
+    def __init__(self, port: str, baud: int):
+        self.kds = KdsUtil(port, baud)
     
-    def config(self, ):
+    def address(self, address_num:int):
         pass
 
     def load(self, qs: bool, method:str):

@@ -1,0 +1,7 @@
+README.md
+setup.py
+KDSlib.egg-info/PKG-INFO
+KDSlib.egg-info/SOURCES.txt
+KDSlib.egg-info/dependency_links.txt
+KDSlib.egg-info/requires.txt
+KDSlib.egg-info/top_level.txt
