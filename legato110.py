@@ -43,7 +43,7 @@ class Legato110:
         self.kds.send_line(f"tvolume {volume} {units}")
 
     def clear_volume(self, parameter:str):
-        if parameter == "infused":
+        if parameter == "infuse":
             self.kds.send_line("civolume")
         elif parameter == "target":
             self.kds.send_line("ctvolume")
