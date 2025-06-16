@@ -104,30 +104,18 @@ class Legato110:
         else:
             print("[SWRate]: please check documentation. incorrect cmd format")
 
-    def set_infuse_ramp(self, time:int, start_rate:int = 0, end_rate:int = 0, units:str = "ml", start_rate_max:bool = False, start_rate_min:bool = False, end_rate_max:bool = False, end_rate_min:bool = False):
-        # error handling for start rate
-        if start_rate_max and start_rate_min:
-            print("[SIRamp]: two values set for the same rate")
-            return
-        elif start_rate_min:
-            start_r = "min"
-        elif start_rate_max:
-            start_r = "max"
-        else:
-            start_r = str(start_rate)
-
-        # error handling for end rate
-        if end_rate_max and end_rate_min:
-            print("[SIRamp]: two values set for the same rate")
-            return
-        elif end_rate_max:
-            end_r = "max"
-        elif end_rate_min:
-            end_r = "min"
-        else:
-            end_r = str(end_rate)
+    def set_infuse_ramp(self, time:int, start_rate:str, end_rate:str, units:str = "ml"):
+        if start_rate == "max" or "min":
+            self.kds.send_line(f"iramp {start_rate} {end_rate} {units} {time}")
+        elif end_rate == "max" or "min":
+            self.kds.send_line(f"iramp {start_rate} {units} {end_rate} {time}")
+        elif{
+            
+        }
+            
         
-        self.kds.send_line(f"iramp {start_r} {end_r} {units} {time}")
+        self.kds.send_line(f"iramp {start_rate} {units} {end_rate} {units} {time}")
+        print("hello")
       
     def set_withdraw_ramp(self, start_rate:int, end_rate:int, units:str, time:int, start_rate_max:bool = False, end_rate_max:bool = False):
         pass
