@@ -45,7 +45,7 @@ class Legato110:
         elif direction == "withdraw":
             self.kds.send_line("wrun")
         else:
-            print("Invalid input. Requires: [infuse | withdraw]")
+            print("[RM]: Invalid input. Requires: [infuse | withdraw]")
 
     # -----------------VOLUME COMMANDS--------------------
     def set_target_volume(self, volume:int, units:str):
@@ -61,7 +61,7 @@ class Legato110:
         elif parameter == "withdraw":
             self.kds.send_line("cwvolume")
         else:
-            print("command not recognized")
+            print("[CV]: command not recognized")
 
     # -----------------TIME COMMANDS--------------------
     def set_target_time(self, time:int):
@@ -78,8 +78,35 @@ class Legato110:
         elif type == "withdraw":
             self.kds.send_line("cwtime")
         else:
-            print("command not recognized")
+            print("[CT]: command not recognized")
     
     def display_time(self, type:str): # do all display cmds in another issue
         pass
 
+    # -----------------RATE COMMANDS--------------------
+    def set_infuse_rate(self, units:str = "", rate:int = 0, setMax:bool = False, setMin:bool = False):
+        if setMax:
+            self.kds.send_line(f"irate max")
+        elif setMin:
+            self.kds.send_line(f"irate min")
+        elif not setMax or setMin:
+            self.kds.send_line(f"irate {rate} {units}")
+        else:
+            print("[SIR]: please check documentation. incorrect cmd format")
+
+    def set_withdraw_rate(self, units:str = "",rate:int = 0, setMax:bool = False, setMin:bool = False):
+        if setMax:
+            self.kds.send_line(f"wrate max")
+        elif setMin:
+            self.kds.send_line(f"wrate min")
+        elif not setMax or setMin:
+            self.kds.send_line(f"wrate {rate} {units}")
+        else:
+            print("[SWR]: please check documentation. incorrect cmd format")
+
+    def set_infuse_ramp(self, start_rate:int, end_rate:int, units:str, time:int, start_rate_max:bool = False, end_rate_max:bool = False):
+        
+        pass
+
+    def set_withdraw_ramp(self, start_rate:int, end_rate:int, units:str, time:int, start_rate_max:bool = False, end_rate_max:bool = False):
+        pass
