@@ -1,0 +1,22 @@
+Metadata-Version: 2.4
+Name: KDSlib
+Version: 0.2
+Summary: Python library for automating the KDS legato 110.
+Home-page: https://github.com/kmhswimgirl/KDSlib
+Author: Kylie Herbstzuber
+Author-email: kmhswimgirl@gmail.com
+Maintainer: @kmhswimgirl
+Description-Content-Type: text/markdown
+Requires-Dist: pyserial>=3.5
+Dynamic: author
+Dynamic: author-email
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: home-page
+Dynamic: maintainer
+Dynamic: requires-dist
+Dynamic: summary
+
+## KDSlib
+
+A python wrapper + automation features for the KDS Legato 110. 
