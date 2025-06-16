@@ -3,6 +3,7 @@ from setuptools import setup, find_packages
 setup(
     name='KDSlib',
     version='0.2',
+    py_modules=['legato110','kds_utils'],
     description="Python library for automating the KDS legato 110.",
     author='Kylie Herbstzuber',
     author_email='kmhswimgirl@gmail.com',
