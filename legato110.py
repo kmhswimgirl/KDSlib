@@ -27,7 +27,6 @@ class Legato110:
         self.kds.send_line("run") 
 
     # set parameters
-
     def set_syringe_size(self, diameter: float, volume: float, units: str):
         dia = str(diameter)
         vol = str(volume)
@@ -36,17 +35,12 @@ class Legato110:
         time.sleep(0.01)
         self.kds.send_line(f"svolume {vol} {units}")
 
-    def set_target_volume(self, mode: str):
-        pass
-
-    def set_target_time(self, time:int):
-        sec = str(time)
-        self.kds.send_line(f"ttime {sec}")
-
     def reverse_direction(self):
         self.kds.send_line("rrun")
+    # -----------------VOLUME COMMANDS--------------------
 
-    # clear values 
+    def set_target_volume(self, mode: str):
+        pass
 
     def clear_volume(self, parameter:str):
         if parameter == "infused":
@@ -55,6 +49,12 @@ class Legato110:
             self.kds.send_line("civol")
         elif parameter == "":
             self.kds.send_line("civolume")
+
+
+    # -----------------TIME COMMANDS--------------------
+    def set_target_time(self, time:int):
+        sec = str(time)
+        self.kds.send_line(f"ttime {sec}")
 
     def clear_time(self, type:str):
         if type == "infuse":
@@ -67,9 +67,7 @@ class Legato110:
             self.kds.send_line("cwtime")
         else:
             print("command not recognized")
-
-    # display values
-
-
-    def infuse(self, ):
+    
+    def display_time(self, type:str): # do all display cmds in another issue
         pass
+
