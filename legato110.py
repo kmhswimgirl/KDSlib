@@ -49,19 +49,63 @@ class Legato110:
             print("[CMD]: invalid command")
 
     def config(self, param:list, value:list):
-       # ERR: check if both lists are equal in length
-       # zip into one list of tuples
-       # for each pair, mget max/min range 
-       # make sure the value is in the defined range 
-       # ERR: value for [param] not in range
+        if len(value) != len(param):
+            print("[ERR]: must have the same number of parameters as values")
+        # ERR --> check if both are equal length
+        # zip into one list of tuples
+        final_list=[]
+        combined_list = list(zip(param, value))
+        # index through list matching each to a case
 
-       # if all values pass, append to list.
-       # send command, send reboot message.
+        def value_error():
+            print(f"[ERR]: Value outside of range --> {item[0]}")
+        
+        def reboot_warning():
+            print("[IMPORTANT]: Device needs to be power cycled in order to apply changes!")
 
-       # also look into match-case statement
+        for item in combined_list:
+            val = item[1]
+            match item[0]:
+                case "steps_per_rev": # if parameter is steps per rev
+                    if val >= 10 or val <= 400:
+                        final_list.append(f"a{val}")
+                    else:
+                        return ValueError
 
-       pass
+                case "gear_ratio": # if parameter is gear ratio
+                    if val > 0:
+                        final_list.append(f"g{val}")
+                    else:
+                        return ValueError
 
+                case "pulley_ratio": # if parameter is steps per rev
+                    if val > 0:
+                        final_list.append(f"p{val}")
+                    else:
+                        return ValueError
+
+                case "lead_screw": 
+                    final_list.append(f"t{val}")
+
+                case "motor_polarity": 
+                    if val == "r" or val == "f":
+                        final_list.append(f"b{val}")
+                    else:
+                        return ValueError
+
+                case "encoder":
+                    if val > 0 and val < 400:
+                        final_list.append(f"e{val}")
+                    else:
+                        return ValueError
+                case _:
+                    print("[ERR]: Not a valid parameter")
+                    return ValueError
+
+        # handle formatting after adding 
+        params_string = ','.join(final_list)
+        self.kds.send_line(f"config {params_string}")
+        reboot_warning()
 
     def delete_method(self, method_name:str):
         self.kds.send_line(f"delmethod {method_name}")
