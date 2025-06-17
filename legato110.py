@@ -48,12 +48,23 @@ class Legato110:
         if set != "ultra" or "22" or "44":
             print("[CMD]: invalid command")
 
-    def config(self):
-        # complicated...
-        pass
+    def config(self, param:list, value:list):
+       # ERR: check if both lists are equal in length
+       # zip into one list of tuples
+       # for each pair, mget max/min range 
+       # make sure the value is in the defined range 
+       # ERR: value for [param] not in range
+
+       # if all values pass, append to list.
+       # send command, send reboot message.
+
+       # also look into match-case statement
+
+       pass
+
 
     def delete_method(self, method_name:str):
-        self.kds.send_line(f"delmethode {method_name}")
+        self.kds.send_line(f"delmethod {method_name}")
 
     def dim_screen(self, brightness:int):
         if brightness < 0 or brightness > 100:
