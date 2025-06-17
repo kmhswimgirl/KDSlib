@@ -45,7 +45,7 @@ class Legato110:
 
     def command_set(self, set:str):
         self.kds.send_line(f"cmd {set}")
-        if set is not "ultra" or "22" or "44":
+        if set != "ultra" or "22" or "44":
             print("[CMD]: invalid command")
 
     def config(self):
@@ -90,8 +90,10 @@ class Legato110:
             print("[P]: invalid input")
 
     def remote(self, pump_addr:int):
-        self.kds.send_line(f"remote {pump_addr}")
-        pass
+        if pump_addr > 100 or pump_addr < 0:
+            return ("[REM]: Invalid address.")
+        else:
+            self.kds.send_line(f"remote {pump_addr}")
 
     def calibrate_tilt(self):
         self.kds.send_line("tilt")
