@@ -70,19 +70,19 @@ class Legato110:
                     if val >= 10 or val <= 400:
                         final_list.append(f"a{val}")
                     else:
-                        return ValueError
+                        value_error()
 
                 case "gear_ratio": # if parameter is gear ratio
                     if val > 0:
                         final_list.append(f"g{val}")
                     else:
-                        return ValueError
+                        value_error()
 
                 case "pulley_ratio": # if parameter is steps per rev
                     if val > 0:
                         final_list.append(f"p{val}")
                     else:
-                        return ValueError
+                        value_error()
 
                 case "lead_screw": 
                     final_list.append(f"t{val}")
@@ -91,16 +91,16 @@ class Legato110:
                     if val == "r" or val == "f":
                         final_list.append(f"b{val}")
                     else:
-                        return ValueError
+                        value_error()
 
                 case "encoder":
                     if val > 0 and val < 400:
                         final_list.append(f"e{val}")
                     else:
-                        return ValueError
+                        value_error()
                 case _:
                     print("[ERR]: Not a valid parameter")
-                    return ValueError
+                    return None
 
         # handle formatting after adding 
         params_string = ','.join(final_list)
