@@ -2,13 +2,8 @@ from .kds_utils import KdsUtil
 import time
  
 class Legato110:
-
     def __init__(self):
         self.kds = KdsUtil()
-    
-    # utilities
-
-   
 
     def load(self, qs: bool, method:str):
         if not qs and method != None:
@@ -18,7 +13,6 @@ class Legato110:
         if qs:
             self.kds.send_line(f"load qs")
 
-
     # set parameters
     def set_syringe_size(self, diameter: float, volume: float, units: str):
         dia = str(diameter)
@@ -27,65 +21,91 @@ class Legato110:
         self.kds.send_line(f"diameter {dia}")
         time.sleep(0.01)
         self.kds.send_line(f"svolume {vol} {units}")
+
     # -----------------SYSTEM COMMANDS--------------------
     def address(self, address_num:int):
-        pass
+        self.kds.send_line(f"address {address_num}")
 
     def ascale(self, scale_value:int):
-        pass
+        self.kds.send_line(f"ascale {scale_value}")
 
-    def set_baud(self, baudrate:int):
-        pass
+    def set_device_baud(self, baudrate:int):
+        valid_baud = [9600, 19200, 38400, 57600, 115200, 128000, 230400, 256000, 460800, 921600]
+        if baudrate in valid_baud:
+            self.kds.send_line(f"baud {baudrate}")
+        else:
+            print("[BAUD]: invalid baudrate")
 
     def boot(self):
-        pass
+        self.kds.send_line("boot")
 
     def catalog(self):
+        # display command, another issue
         pass
 
     def command_set(self, set:str):
-        pass
+        self.kds.send_line(f"cmd {set}")
+        if set is not "ultra" or "22" or "44":
+            print("[CMD]: invalid command")
 
     def config(self):
+        # complicated...
         pass
 
-    def delmethod(self, mathod_name:str):
-        pass
+    def delete_method(self, method_name:str):
+        self.kds.send_line(f"delmethode {method_name}")
 
-    def dim_screen(self, value:int):
-        pass
+    def dim_screen(self, brightness:int):
+        if brightness < 0 or brightness > 100:
+            print("[DIM]: Brightness out of valid range.")
+        else:
+            self.kds.send_line(f"dim {brightness}")
 
     def echo(self):
-        pass
+        self.kds.send_line("echo")
 
     def free(self):
+        # display command, later issue
         pass
 
     def force(self, force_percent:int):
-        pass
+        self.kds.send_line(f"force {force_percent}")
 
-    def ftswitch(self, value:int):
-        pass
+    def set_footswitch_mode(self, mode:str):
+        valid_modes = ["mom", "rise", "fall"]
+        if mode in valid_modes:
+            self.kds.send_line(f"ftswitch {mode}")
+        else:
+            print("[SFM]: Not a valid footswitch mode")
 
     def mode(self):
         # displays mode, later issue
         pass
-    
+
     def poll(self, mode:str):
         # potential vals are on, off, remote
-        pass
+        if mode == "on" or "off" or "remote":
+            self.kds.send_line(f"poll {mode}")
+        else:
+            print("[P]: invalid input")
 
     def remote(self, pump_addr:int):
+        self.kds.send_line(f"remote {pump_addr}")
         pass
 
     def calibrate_tilt(self):
-        pass
+        self.kds.send_line("tilt")
 
-    def set_time(self, time:int):
-        pass
+    def set_time(self, date:str, time:str):
+        self.kds.send_line(f"time {date} {time}")
 
-    def get_version(self, verbose:bool):
-        pass
+    def get_version(self, verbose:bool): # need to figure out returns...
+        if verbose:
+            self.kds.send_line("version")
+        elif not verbose:
+            self.kds.send_line("ver")
+        else:
+            print("[GV]: Invalid parameter")
 
     # -----------------RUN COMMANDS--------------------
     def run(self):
@@ -136,7 +156,7 @@ class Legato110:
         elif type == "withdraw":
             self.kds.send_line("cwtime")
         else:
-            print("[CT]: command not recognized")
+            print("[CT]: command not recognized. Use [infuse | target | both | withdraw]")
     
     def display_time(self, type:str): # do all display cmds in another issue
         pass
