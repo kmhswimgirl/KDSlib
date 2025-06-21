@@ -2,8 +2,10 @@ from .kds_utils import KdsUtil
 import time
  
 class Legato110:
-    def __init__(self):
-        self.kds = KdsUtil()
+    def __init__(self, port:str, baud: int):
+        self.port = port
+        self.baud = baud
+        self.kds = KdsUtil(self.port, self.baud)
 
     def load(self, qs: bool, method:str):
         if not qs and method != None:
