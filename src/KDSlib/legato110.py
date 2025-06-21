@@ -13,15 +13,6 @@ class Legato110:
         if qs:
             self.kds.send_line(f"load qs")
 
-    # set parameters
-    def set_syringe_size(self, diameter: float, volume: float, units: str):
-        dia = str(diameter)
-        vol = str(volume)
-
-        self.kds.send_line(f"diameter {dia}")
-        time.sleep(0.01)
-        self.kds.send_line(f"svolume {vol} {units}")
-
     # -----------------SYSTEM COMMANDS--------------------
     def address(self, address_num:int):
         self.kds.send_line(f"address {address_num}")
@@ -47,6 +38,10 @@ class Legato110:
         self.kds.send_line(f"cmd {set}")
         if set != "ultra" or "22" or "44":
             print("[CMD]: invalid command")
+
+    def default_config(self): # can't remember if tested...
+        self.kds.send_line("config a400,g1,p2.4,t24,br,n0.1,x33,e100")
+        print("[IMPORTANT]: Device needs to be power cycled in order to apply changes!")
 
     def config(self, param:list, value:list):
         if len(value) != len(param):
@@ -163,6 +158,22 @@ class Legato110:
             self.kds.send_line("ver")
         else:
             print("[GV]: Invalid parameter")
+
+    # -----------------SYRINGE COMMANDS--------------------
+    def set_syringe_size(self, diameter: float, volume: float, units: str):
+        dia = str(diameter)
+        vol = str(volume)
+
+        self.kds.send_line(f"diameter {dia}")
+        time.sleep(0.01)
+        self.kds.send_line(f"svolume {vol} {units}")
+    
+    def set_syringe_count(self, number:int):
+        self.kds.send_line(f"gang {number}")
+
+    def set_syringe_manu(self,char_code:str, size:int):
+        # add error handling for invalid codes/sizes later. Maybe in a dictionary...
+        self.kds.send_line(f"syrm {char_code} {size}")
 
     # -----------------RUN COMMANDS--------------------
     def run(self):
