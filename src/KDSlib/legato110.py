@@ -116,10 +116,6 @@ class Legato110:
     def echo(self):
         self.kds.send_line("echo")
 
-    def free(self):
-        # display command, later issue
-        pass
-
     def force(self, force_percent:int):
         self.kds.send_line(f"force {force_percent}")
 
@@ -129,10 +125,6 @@ class Legato110:
             self.kds.send_line(f"ftswitch {mode}")
         else:
             print("[SFM]: Not a valid footswitch mode")
-
-    def mode(self):
-        # displays mode, later issue
-        pass
 
     def poll(self, mode:str):
         # potential vals are on, off, remote
@@ -153,14 +145,6 @@ class Legato110:
     def set_time(self, date:str, time:str):
         self.kds.send_line(f"time {date} {time}")
 
-    def get_version(self, verbose:bool): # need to figure out returns...
-        if verbose:
-            self.kds.send_line("version")
-        elif not verbose:
-            self.kds.send_line("ver")
-        else:
-            print("[GV]: Invalid parameter")
-
     # -----------------SYRINGE COMMANDS--------------------
     def set_syringe_size(self, diameter: float, volume: float, units: str):
         dia = str(diameter)
@@ -172,10 +156,6 @@ class Legato110:
     
     def set_syringe_count(self, number:int):
         self.kds.send_line(f"gang {number}")
-
-    def set_syringe_manu(self,char_code:str, size:int):
-        # add error handling for invalid codes/sizes later. Maybe in a dictionary...
-        self.kds.send_line(f"syrm {char_code} {size}")
 
     # -----------------RUN COMMANDS--------------------
     def run(self):
@@ -227,9 +207,6 @@ class Legato110:
             self.kds.send_line("cwtime")
         else:
             print("[CT]: command not recognized. Use [infuse | target | both | withdraw]")
-    
-    def display_time(self, type:str): # do all display cmds in another issue
-        pass
 
     # -----------------RATE COMMANDS--------------------
     def set_infuse_rate(self, units:str = "", rate:int = 0, setMax:bool = False, setMin:bool = False):
@@ -251,13 +228,3 @@ class Legato110:
             self.kds.send_line(f"wrate {rate} {units}")
         else:
             print("[SWRate]: please check documentation. incorrect cmd format")
-
-    def set_infuse_ramp(self, start_rate:str, end_rate:str, start_units:str, end_units:str, time:int):
-        if start_rate == "max" or "min":
-            self.kds.send_line(f"iramp {start_rate} {end_rate} {end_units} {time}")
-        elif end_rate == "max" or "min":
-            self.kds.send_line(f"iramp {start_rate} {start_units} {end_rate} {time}")
-        elif end_rate == "max" or "min" and start_rate == "max" or "min":
-            self.kds.send_line(f"iramp {start_rate} {end_rate} {time}")
-        else:
-            self.kds.send_line(f"iramp {start_rate} {start_units} {end_rate} {end_units} {time}")
