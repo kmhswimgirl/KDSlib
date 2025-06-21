@@ -1,4 +1,3 @@
-
 import serial
 from typing import Optional
 
