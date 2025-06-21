@@ -1,11 +1,15 @@
+
 import serial
 from typing import Optional
 
 class KdsUtil:
-    def __init__(self):
+    """
+    A helper class that contains the process to send commands
+    """
+    def __init__(self, port:str, baud: int):
         self.ser: Optional[serial.Serial] = None
-        self.port = '/dev/tty.usbmodem11297211'  # Update this to match your port
-        self.baudrate = 9600
+        self.port = port  # Update this to match your port
+        self.baudrate = baud
         self.timeout = 1
         self.connect()  # Automatically connect on initialization
     
@@ -42,11 +46,3 @@ class KdsUtil:
         """Clean up serial connection on object destruction."""
         if self.ser and self.ser.is_open:
             self.ser.close()
-
-def testing():
-    kds = KdsUtil()
-    kds.connect()
-    kds.send_line("config")
-
-if __name__ == "__main__":
-    testing()

@@ -39,7 +39,7 @@ class Legato110:
         if set != "ultra" or "22" or "44":
             print("[CMD]: invalid command")
 
-    def default_config(self):
+    def default_config(self): # can't remember if tested...
         self.kds.send_line("config a400,g1,p2.4,t24,br,n0.1,x33,e100")
         print("[IMPORTANT]: Device needs to be power cycled in order to apply changes!")
 
