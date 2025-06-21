@@ -1,5 +1,5 @@
 [project]
-name = "KDSlib"
+name = "kds-lib"
 version = "0.0.4"
 authors = [
   { name="kmhswimgirl", email="kmhswimgirl@gmail.com" },
