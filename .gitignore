@@ -2,4 +2,4 @@
 /__pycache__/
 /KDSlib.egg-info/
 syr_lookup.py
-/venv/
+.venv/

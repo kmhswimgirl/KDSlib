@@ -1,4 +1,4 @@
-from src.kds_lib import Legato110, KdsUtil
+from src.KDSautolib import Legato110, KdsUtil
 
 # test connection
 u = KdsUtil("port", 115200)

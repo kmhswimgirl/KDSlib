@@ -1,0 +1,12 @@
+LICENSE
+README.md
+pyproject.toml
+src/KDSautolib/__init__.py
+src/KDSautolib/kds_utils.py
+src/KDSautolib/legato110.py
+src/KDSautolib.egg-info/PKG-INFO
+src/KDSautolib.egg-info/SOURCES.txt
+src/KDSautolib.egg-info/dependency_links.txt
+src/KDSautolib.egg-info/requires.txt
+src/KDSautolib.egg-info/top_level.txt
+tests/tests.py
