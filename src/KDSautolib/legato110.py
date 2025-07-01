@@ -153,7 +153,7 @@ class Legato110:
         self.kds.send_line(f"diameter {dia}")
         time.sleep(0.01)
         self.kds.send_line(f"svolume {vol} {units}")
-    
+
     def set_syringe_count(self, number:int):
         self.kds.send_line(f"gang {number}")
 

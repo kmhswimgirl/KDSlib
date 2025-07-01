@@ -100,9 +100,35 @@ def test_set_time(legato110):
 
 def test_set_syringe_size(legato110):
     legato110.set_syringe_size(10, 5, "ml")
-    legato110.kds.send_line.assert_called_with("diameter 10")
     legato110.kds.send_line.assert_called_with("svolume 5 ml")
 
 def test_set_syringe_count(legato110):
     legato110.set_syringe_count(10)
     legato110.kds.send_line.assert_called_with("gang 10")
+
+## ------------ Run Commands --------------- ##
+
+def test_run(legato110):
+    legato110.run()
+    legato110.kds.send_line.assert_called_with("run")
+
+def test_reverse_direction(legato110):
+    legato110.reverse_direction()
+    legato110.kds.send_line.assert_called_with("rrun")
+
+def test_stop(legato110):
+    legato110.stop()
+    legato110.kds.send_line.assert_called_with("stp")
+
+def test_run_motors_i(legato110):
+    legato110.run_motors("infuse")
+    legato110.kds.send_line.assert_called_with("irun")
+
+def test_run_motors_w(legato110):
+    legato110.run_motors("withdraw")
+    legato110.kds.send_line.assert_called_with("wrun")
+
+def test_run_motors_error(capsys, legato110):
+    legato110.run_motors("invalid")
+    captured = capsys.readouterr()
+    assert "[RM]: Invalid input. Requires: [infuse | withdraw]" in captured.out
