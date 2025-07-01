@@ -7,13 +7,13 @@ class Legato110:
         self.baud = baud
         self.kds = KdsUtil(self.port, self.baud)
 
-    def load(self, qs: bool, method:str):
+    def load(self, qs: bool, method:str = ""):
         if not qs and method != None:
             self.kds.send_line(f"load {method}")
         if not qs and method == None:
             self.kds.send_line("load")
         if qs:
-            self.kds.send_line(f"load qs")
+            self.kds.send_line("load qs")
 
     # -----------------SYSTEM COMMANDS--------------------
     def address(self, address_num:int):
