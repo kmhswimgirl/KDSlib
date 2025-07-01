@@ -80,11 +80,10 @@ def test_poll(legato110):
     legato110.poll("on")
     legato110.kds.send_line.assert_called_with("poll on")
 
-def test_remote_valid(legato110):
+def test_remote(legato110):
     legato110.remote(10)
     legato110.kds.send_line.assert_called_with("remote 10")
 
-def test_remote_invalid(legato110):
     result = legato110.remote(101)
     assert result == "[REM]: Invalid address."
 
@@ -120,15 +119,67 @@ def test_stop(legato110):
     legato110.stop()
     legato110.kds.send_line.assert_called_with("stp")
 
-def test_run_motors_i(legato110):
+def test_run_motors(capsys, legato110):
+    # infuse
     legato110.run_motors("infuse")
     legato110.kds.send_line.assert_called_with("irun")
 
-def test_run_motors_w(legato110):
+    # withdraw
     legato110.run_motors("withdraw")
     legato110.kds.send_line.assert_called_with("wrun")
 
-def test_run_motors_error(capsys, legato110):
+    # error message
     legato110.run_motors("invalid")
     captured = capsys.readouterr()
     assert "[RM]: Invalid input. Requires: [infuse | withdraw]" in captured.out
+
+# ==================== Volume Commands ===================== #
+def test_set_target_volume(legato110):
+    legato110.set_target_volume(10, "ml")
+    legato110.kds.send_line.assert_called_with("tvolume 10 ml")
+
+
+def test_clear_volume(capsys, legato110):
+    legato110.clear_volume("infuse")
+    legato110.kds.send_line.assert_called_with("civolume")
+
+    legato110.clear_volume("target")
+    legato110.kds.send_line.assert_called_with("ctvolume")
+
+    legato110.clear_volume("bothDirs")
+    legato110.kds.send_line.assert_called_with("cvolume")
+
+    legato110.clear_volume("withdraw")
+    legato110.kds.send_line.assert_called_with("cwvolume")
+
+    legato110.clear_volume("invalid")
+    captured = capsys.readouterr()
+    assert "[CV]: command not recognized" in captured.out
+
+# ==================== Time Commands ===================== #
+
+def test_set_target_time(legato110):
+    legato110.set_target_time(30)
+    legato110.kds.send_line.assert_called_with("ttime 30")
+
+def test_clear_time(capsys, legato110):
+    # infuse
+    legato110.clear_time("infuse")
+    legato110.kds.send_line.assert_called_with("citime")
+
+    # target
+    legato110.clear_time("target")
+    legato110.kds.send_line.assert_called_with("cttime")
+
+    # both
+    legato110.clear_time("both")
+    legato110.kds.send_line.assert_called_with("ctime")
+
+    # withdraw
+    legato110.clear_time("withdraw")
+    legato110.kds.send_line.assert_called_with("cwtime")
+
+    # error handling
+    legato110.clear_time("invalid")
+    captured = capsys.readouterr()
+    assert "[CT]: command not recognized. Use [infuse | target | both | withdraw]" in captured.out
