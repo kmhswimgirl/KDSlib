@@ -183,3 +183,40 @@ def test_clear_time(capsys, legato110):
     legato110.clear_time("invalid")
     captured = capsys.readouterr()
     assert "[CT]: command not recognized. Use [infuse | target | both | withdraw]" in captured.out
+
+# ==================== Rate Commands ===================== #
+    def test_set_infuse_rate(capsys, legato110):
+        # max rate
+        legato110.set_infuse_rate(setMax = True)
+        legato110.kds.send_line.assert_called_with("irate max")
+
+        # min rate
+        legato110.set_infuse_rate(setMin = True)
+        legato110.kds.send_line.assert_called_with("irate min")
+
+        # other rate
+        legato110.set_infuse_rate(rate = 20, units = "ml")
+        legato110.kds.send_line.assert_called_with("irate 20 ml")
+
+        # error
+        legato110.set_infuse_rate("invalid")
+        captured = capsys.readouterr()
+        assert "[SIRate]: please check documentation. incorrect cmd format" in captured.out
+
+    def test_set_withdraw_rate(capsys, legato110):
+        # max rate
+        legato110.set_withdraw_rate(setMax = True)
+        legato110.kds.send_line.assert_called_with("wrate max")
+
+        # min rate
+        legato110.set_withdraw_rate(setMin = True)
+        legato110.kds.send_line.assert_called_with("wrate min")
+
+        # other rate
+        legato110.set_withdraw_rate(rate = 20, units = "ml")
+        legato110.kds.send_line.assert_called_with("wrate 20 ml")
+
+        # error
+        legato110.set_withdraw_rate("invalid")
+        captured = capsys.readouterr()
+        assert "[SWRate]: please check documentation. incorrect cmd format" in captured.out

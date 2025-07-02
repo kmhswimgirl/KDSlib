@@ -211,9 +211,9 @@ class Legato110:
     # -----------------RATE COMMANDS--------------------
     def set_infuse_rate(self, units:str = "", rate:int = 0, setMax:bool = False, setMin:bool = False):
         if setMax:
-            self.kds.send_line(f"irate max")
+            self.kds.send_line("irate max")
         elif setMin:
-            self.kds.send_line(f"irate min")
+            self.kds.send_line("irate min")
         elif not setMax or setMin:
             self.kds.send_line(f"irate {rate} {units}")
         else:
