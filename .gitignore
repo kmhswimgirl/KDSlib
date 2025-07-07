@@ -3,3 +3,5 @@
 /KDSlib.egg-info/
 syr_lookup.py
 .venv/
+.pytest_cache/
+.vscode/
