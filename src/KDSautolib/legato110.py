@@ -32,9 +32,9 @@ class Legato110:
     def boot(self):
         self.kds.send_line("boot")
 
-    def catalog(self):
-        # display command, another issue
-        pass
+    # def catalog(self):
+    #     # display command, another issue
+    #     pass
 
     def command_set(self, set:str):
         self.kds.send_line(f"cmd {set}")
