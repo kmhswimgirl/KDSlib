@@ -1,6 +1,6 @@
 from .kds_utils import KdsUtil
 import time
- 
+
 class Legato110:
     def __init__(self, port:str, baud: int):
         self.port = port
@@ -12,17 +12,58 @@ class Legato110:
             self.kds.send_line(f"load {method}")
         if not qs and method == None:
             self.kds.send_line("load")
-        if qs:
+        if qs and method == "i":
             self.kds.send_line(f"load qs")
 
     # -----------------SYSTEM COMMANDS--------------------
     def address(self, address_num:int):
+        """
+        Sets the pump address. Valid range is 0-99.
+
+        Args
+        ---
+        address_num : int 
+            The address number to set for the device.
+        
+        Notes
+        ---
+        Pumps with an address of 0 are controllers, and pumps with an address of 1-99 are followers.
+        """
+
         self.kds.send_line(f"address {address_num}")
 
     def ascale(self, scale_value:int):
+        """
+        Sets the analog scaling percentage. Valid range is 1-100
+
+        Args
+        ---
+        scale_value : int
+            The analog scaling percentage.
+        
+        Notes
+        ---
+        The scaling percentage adjusts the max speed of the pump. For example, if 50 is chosen, 
+        the full range of the analog input will run the pump between 0% and 50% speed.
+        """
+
         self.kds.send_line(f"ascale {scale_value}")
 
     def set_device_baud(self, baudrate:int):
+        """
+        Sets the device baudrate. 
+        9600, 19200, 38400, 57600, 115200, 128000, 230400, 256000, 460800, 921600 are all valid baudrates.
+
+        Args
+        ---
+        baudrate : int 
+            Device baudrate.
+        
+        Notes
+        ---
+        Running at 921600 may cause missed characters.
+        """
+
         valid_baud = [9600, 19200, 38400, 57600, 115200, 128000, 230400, 256000, 460800, 921600]
         if baudrate in valid_baud:
             self.kds.send_line(f"baud {baudrate}")
@@ -30,6 +71,10 @@ class Legato110:
             print("[BAUD]: invalid baudrate")
 
     def boot(self):
+        """
+        Reboots the device.
+        """
+
         self.kds.send_line("boot")
 
     def catalog(self):
@@ -37,15 +82,71 @@ class Legato110:
         pass
 
     def command_set(self, set:str):
+        """
+        Sets the command set of the device. The pump is capable of operating in the 
+        Ultra command set or the legacy Model 22 or PHD 44 command sets. Valid command sets are 
+        "ultra", "22", and "44".
+
+        Args
+        ---
+        set : str
+            The command set. 
+
+        Note
+        ---
+        If the pump is in any other command set other than "ultra", only "ultra" will be accepted.
+        """
+
         self.kds.send_line(f"cmd {set}")
         if set != "ultra" or "22" or "44":
             print("[CMD]: invalid command")
 
     def default_config(self): # can't remember if tested...
+        """
+        Resets the configuration to the defaults. Must cycle power in order to apply changes.
+
+        Note
+        ---
+        The default configuration of the pump is:
+                              steps_per_rev = 400,
+                              gear_ratio = 1:1,
+                              pulley ratio = 2.4:1,
+                              lead screw = 24 threads/in,
+                              motor polarity = reverse
+                              min syringe size = 0.1 mm
+                              maximum syringe size = 33 mm,
+                              encoder = 100.
+        """
+
         self.kds.send_line("config a400,g1,p2.4,t24,br,n0.1,x33,e100")
         print("[IMPORTANT]: Device needs to be power cycled in order to apply changes!")
 
     def config(self, param:list, value:list):
+        """
+        Changes certain aspects of the pumps configuration.
+
+        Args
+        ---
+        param : list
+            the parameters that are bing changed. 
+        value : list
+            the values associated with each parameter from the param list.
+
+        Parameter Description
+        --------------------
+        `steps_per_rev` : 200 is for a 1.8 degree stepper motor, 400 is for a 0.9 degree motor. Valid values are 10 to 400.
+        `gear_ratio` : The gear ratio with out the ":1". A 2:1 ratio is just 2.
+        `pulley_ratio` : The pulley ratio without the ":1". A 1.6:1 ratio is just 1.6
+        `lead_screw` : Lead screw threads per inch. If negative, threads per cm.
+        `motor_polarity` : Direction the motor runs in when the pump runs forward. Pumps with pulleys need to be in reverse polarity. Valid values are "f" and "r".
+        `encoder` : Encoder line count. Zero disables the encoder. Valid range is from 0 to 400.
+
+        Example
+        ---
+        I want to set the polarity to reverse and the gear ratio to 2:1.
+        `Legato110.config(["motor_polarity", "gear_ratio"], ["r", 2])`
+        """
+
         if len(value) != len(param):
             print("[ERR]: must have the same number of parameters as values")
         # ERR --> check if both are equal length
@@ -105,15 +206,36 @@ class Legato110:
         reboot_warning()
 
     def delete_method(self, method_name:str):
+        """
+        Deletes a method from the catalog of methods.
+
+        Args
+        ---
+        method_name : str
+            The name of the method to be deleted.
+        """
         self.kds.send_line(f"delmethod {method_name}")
 
     def dim_screen(self, brightness:int):
+        """
+        Sets the percent brightness of the device screen. Valid values are from 0-100.
+
+        Args
+        ---
+        brightness : int
+            the brightness level of the screen.
+
+        Note
+        ---
+        Setting the brightness to 0 will result in the backlight switching off.
+        """
         if brightness < 0 or brightness > 100:
             print("[DIM]: Brightness out of valid range.")
         else:
             self.kds.send_line(f"dim {brightness}")
 
     def echo(self):
+
         self.kds.send_line("echo")
 
     def force(self, force_percent:int):
