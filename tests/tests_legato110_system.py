@@ -44,7 +44,22 @@ def test_default_config(capsys, legato110):
     legato110.default_config()
     legato110.kds.send_line.assert_called_with("config a400,g1,p2.4,t24,br,n0.1,x33,e100")
     captured = capsys.readouterr()
-    assert "Device needs to be power cycled" in captured.out
+    assert "[IMPORTANT]: Device needs to be power cycled" in captured.out
+
+def test_config_list_length_err(capsys, legato110):
+    legato110.config(["a", "g", "p"],[300])
+    captured = capsys.readouterr()
+    assert "[ERR]: must have the same number of parameters as values" in captured.out
+
+def test_config_oo_bounds(capsys, legato110):
+    legato110.config(["steps_per_rev"],[500])
+    captured = capsys.readouterr()
+    assert "[ERR]: Value outside of range --> steps_per_rev" in captured.out
+
+def test_config_invalid_param(capsys, legato110):
+    legato110.config(["k"],[400])
+    captured = capsys.readouterr()
+    assert "[ERR]: Not a valid parameter" in captured.out
 
 def test_delete_method(legato110):
     legato110.delete_method("test_method")
@@ -137,7 +152,6 @@ def test_run_motors(capsys, legato110):
 def test_set_target_volume(legato110):
     legato110.set_target_volume(10, "ml")
     legato110.kds.send_line.assert_called_with("tvolume 10 ml")
-
 
 def test_clear_volume(capsys, legato110):
     legato110.clear_volume("infuse")
